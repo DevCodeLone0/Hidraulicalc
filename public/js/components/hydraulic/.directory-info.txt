@@ -1,0 +1,14 @@
+/**
+ * @file placeholder.txt
+ * @description Placeholder file for js/components/hydraulic/ directory
+ * This file will be replaced with hydraulic calculator modules during Phase 4 implementation.
+ * @author Hidraulicalc Team
+ * @version 1.0.0
+ */
+
+// This directory will contain:
+// - cylindricalReservoir.js - Cylindrical reservoir calculator
+// - rectangularChannel.js   - Rectangular channel calculator
+// - verticalTank.js         - Vertical tank calculator
+// - calculatorTabs.js       - Tab navigation logic
+// - hydraulicCore.js        - Core hydraulic calculation logic

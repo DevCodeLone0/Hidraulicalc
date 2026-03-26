@@ -1,0 +1,266 @@
+/**
+ * responsive.css - Responsive Design
+ * @description Mobile andtablet responsive styles (min 375px breakpoint)
+ * @author Hidraulicalc Team
+ * @version 1.0.0
+ */
+
+/* ========================================
+   TABLET (768px and below)
+   ======================================== */
+
+@media (max-width: 768px) {
+  .calculator-title {
+    font-size: 2rem;
+  }
+
+  .nav-tabs {
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .tab-button {
+    flex: 0 0 auto;
+    font-size: 0.8rem;
+    padding: var(--spacing-xs) var(--spacing-md);
+  }
+
+  .graph-container {
+    height: 300px;
+  }
+}
+
+/* ========================================
+   MOBILE (375px to 767px)
+   ======================================== */
+
+@media (max-width: 767px) {
+  /* Layout adjustments */
+  #app-container {
+    padding: 0;
+    max-width: 100%;
+  }
+
+  .scrollable-section {
+    padding: var(--spacing-md);
+  }
+
+  /* Typography */
+  .calculator-title {
+    font-size: 1.5rem;
+  }
+
+  .section-subtitle {
+    font-size: 0.875rem;
+  }
+
+  /* Calculator adjustments */
+  .form-group {
+    gap: var(--spacing-xs);
+  }
+
+  input[type="text"],
+  input[type="number"] {
+    font-size: 16px; /* Prevent iOS zoom on focus */
+    padding: var(--spacing-sm);
+  }
+
+  /* Button sizing for touch (minimum 44px) */
+  .btn-calculate,
+  .btn-graph,
+  .btn-clear,
+  .btn-scroll {
+    min-height: 44px;
+    min-width: 44px;
+    font-size: 0.9rem;
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+
+  /* Tab panels */
+  .tab-panel {
+    animation: none; /* Disable animation on mobile for performance */
+  }
+
+  /* Result display */
+  .result-display {
+    padding: var(--spacing-md);
+  }
+
+  .result-value {
+    font-size: 1.25rem;
+  }
+
+  /* History adjustments */
+  .history-container {
+    max-height: 150px;
+  }
+
+  .history-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-xs);
+  }
+
+  .history-timestamp {
+    align-self: flex-end;
+  }
+
+  /* Graph adjustments */
+  .graph-container {
+    height: 250px;
+  }
+
+  .area-result {
+    position: static;
+    margin-top: var(--spacing-md);
+    text-align: center;
+  }
+
+  /* Example buttons */
+  .example-buttons {
+    gap: var(--spacing-xs);
+  }
+
+  .btn-example {
+    font-size: 0.75rem;
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+
+  /* Scroll indicator */
+  .scroll-indicator {
+    width: 100%;
+    text-align: center;
+  }
+
+  .btn-scroll {
+    margin: 0;
+  }
+
+  /* Function input on mobile */
+  .function-input-container {
+    gap: var(--spacing-sm);
+  }
+
+  #function-input {
+    font-size: 18px; /* Larger font for mobile input */
+  }
+}
+
+/* ========================================
+   SMALL MOBILE (320px to 374px)
+   ======================================== */
+
+@media (max-width: 374px) {
+  .calculator-title {
+    font-size: 1.25rem;
+  }
+
+  .nav-tabs {
+    padding-bottom: var(--spacing-xs);
+  }
+
+  .tab-button {
+    font-size: 0.75rem;
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+
+  .form-group label {
+    font-size: 0.8rem;
+  }
+
+  .graph-container {
+    height: 200px;
+  }
+
+  .example-buttons {
+    justify-content: center;
+  }
+}
+
+/* ========================================
+   LANDSCAPE (orientation: landscape)
+   ======================================== */
+
+@media (orientation: landscape) and (max-height: 500px) {
+  .scrollable-section {
+    padding: var(--spacing-sm);
+  }
+
+  .calculator-title {
+    font-size: 1.25rem;
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .section-subtitle {
+    margin-bottom: var(--spacing-md);
+  }
+
+  .graph-container {
+    height: 100%;
+    min-height: 200px;
+  }
+
+  .function-examples {
+    display: none; /* Hide examples in landscape to save space */
+  }
+}
+
+/* ========================================
+   HIGH DPI / RETINA DISPLAYS
+   ======================================== */
+
+@media (-webkit-min-device-pixel-ratio: 2),
+       (min-resolution: 192dpi) {
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* ========================================
+   PRINT STYLES
+   ======================================== */
+
+@media print {
+  body {
+    background: white;
+    color: black;
+  }
+
+  .scroll-indicator,
+  .btn-clear,
+  .function-examples,
+  .history-container {
+    display: none;
+  }
+
+  .scrollable-section {
+    page-break-inside: avoid;
+    border: none;
+  }
+
+  .graph-container {
+    height: 300px;
+    border: 1px solid black;
+  }
+}
+
+/* ========================================
+   REDUCED MOTION (accessibility preference)
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .tab-panel,
+  .area-result,
+  .correction-notifications {
+    animation: none;
+  }
+}

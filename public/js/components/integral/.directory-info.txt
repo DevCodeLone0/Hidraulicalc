@@ -1,0 +1,14 @@
+/**
+ * @file placeholder.txt
+ * @description Placeholder file for js/components/integral/ directory
+ * This file will be replaced with integral graphing modules during Phase 5 implementation.
+ * @author Hidraulicalc Team
+ * @version 1.0.0
+ */
+
+// This directory will contain:
+// - integralGrapher.js    - Main integral graphing component
+// - functionPlot.js       - function-plot wrapper and configuration
+// - areaCalculator.js     - Area under curve calculation
+// - integralInput.js      - Function input and limit validation
+// - graphInteractions.js  - Zoom, hover, and pointer events

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Hidraulicalc - Calculadoras de volumen hidráulico y graficador de integrales">
+  <meta name="author" content="Hidraulicalc Team">
+  <title>Hidraulicalc - Hidráulica e Integrales</title>
+
+  <!-- External Libraries -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/mathjs@12.4.0/lib/browser/math.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/function-plot@1.23.3/dist/function-plot.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0"></script>
+
+  <!-- Internal Styles -->
+  <link rel="stylesheet" href="css/modern.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <h1 class="app-title"><i class="fas fa-water"></i> Hidraulicalc</h1>
+      <p class="app-subtitle">Calculadoras de ingeniería hidráulica modernas</p>
+    </header>
+
+    <!-- Calculator Grid -->
+    <div class="calculator-grid">
+
+      <!-- Cylindrical Reservoir Card -->
+      <div class="calculator-card" data-calculator="cylindrical-reservoir">
+        <div class="calculator-card__header">
+          <h2 class="calculator-card__title">
+            <i class="fas fa-database calculator-card__icon"></i>
+            Embalse Cilíndrico
+          </h2>
+        </div>
+        <div class="calculator-card__body">
+          <form class="calculator-form" id="form-cylindrical-reservoir">
+            <div class="form-group">
+              <label class="input-label" for="cyl-radius">Radio del cilindro</label>
+              <div class="input-wrapper">
+                <i class="fas fa-ruler input-icon"></i>
+                <input type="number" id="cyl-radius" class="input-field" placeholder="Ej: 5" step="0.01" min="0" required>
+                <span class="input-unit">m</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="input-label" for="cyl-height">Altura del cilindro</label>
+              <div class="input-wrapper">
+                <i class="fas fa-arrows-alt-v input-icon"></i>
+                <input type="number" id="cyl-height" class="input-field" placeholder="Ej: 10" step="0.01" min="0" required>
+                <span class="input-unit">m</span>
+              </div>
+            </div>
+            <button type="submit" class="btn btn--primary w-full">
+              <i class="fas fa-calculator"></i>
+              Calcular Volumen
+            </button>
+          </form>
+          <div id="result-cylindrical-reservoir" class="result-display hidden">
+            <div class="result-item">
+              <span class="result-label">Volumen:</span>
+              <span class="result-value" id="cyl-volume">0.00 m³</span>
+            </div>
+            <div class="result-item">
+              <span class="result-label">Volumen (ft³):</span>
+              <span class="result-value" id="cyl-volume-ft">0.00 ft³</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rectangular Channel Card -->
+      <div class="calculator-card" data-calculator="rectangular-channel">
+        <div class="calculator-card__header">
+          <h2 class="calculator-card__title">
+            <i class="fas fa-vector-square calculator-card__icon"></i>
+            Canal Rectangular
+          </h2>
+        </div>
+        <div class="calculator-card__body">
+          <form class="calculator-form" id="form-rectangular-channel">
+            <div class="form-group">
+              <label class="input-label" for="rect-length">Longitud</label>
+              <div class="input-wrapper">
+                <i class="fas fa-ruler-horizontal input-icon"></i>
+                <input type="number" id="rect-length" class="input-field" placeholder="Ej: 20" step="0.01" min="0" required>
+                <span class="input-unit">m</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="input-label" for="rect-width">Ancho</label>
+              <div class="input-wrapper">
+                <i class="fas fa-arrows-alt-h input-icon"></i>
+                <input type="number" id="rect-width" class="input-field" placeholder="Ej: 3" step="0.01" min="0" required>
+                <span class="input-unit">m</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="input-label" for="rect-height">Altura</label>
+              <div class="input-wrapper">
+                <i class="fas fa-arrows-alt-v input-icon"></i>
+                <input type="number" id="rect-height" class="input-field" placeholder="Ej: 2" step="0.01" min="0" required>
+                <span class="input-unit">m</span>
+              </div>
+            </div>
+            <button type="submit" class="btn btn--primary w-full">
+              <i class="fas fa-calculator"></i>
+              Calcular Volumen
+            </button>
+          </form>
+          <div id="result-rectangular-channel" class="result-display hidden">
+            <div class="result-item">
+              <span class="result-label">Volumen:</span>
+              <span class="result-value" id="rect-volume">0.00 m³</span>
+            </div>
+            <div class="result-item">
+              <span class="result-label">Volumen (ft³):</span>
+              <span class="result-value" id="rect-volume-ft">0.00 ft³</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vertical Tank Card -->
+      <div class="calculator-card" data-calculator="vertical-tank">
+        <div class="calculator-card__header">
+          <h2 class="calculator-card__title">
+            <i class="fas fa-tint calculator-card__icon"></i>
+            Tanque Vertical
+          </h2>
+        </div>
+        <div class="calculator-card__body">
+          <form class="calculator-form" id="form-vertical-tank">
+            <div class="form-group">
+              <label class="input-label" for="tank-radius">Radio del tanque</label>
+              <div class="input-wrapper">
+                <i class="fas fa-circle input-icon"></i>
+                <input type="number" id="tank-radius" class="input-field" placeholder="Ej: 2.5" step="0.01" min="0" required>
+                <span class="input-unit">m</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="input-label" for="tank-height">Altura del tanque</label>
+              <div class="input-wrapper">
+                <i class="fas fa-arrows-alt-v input-icon"></i>
+                <input type="number" id="tank-height" class="input-field" placeholder="Ej: 8.75" step="0.01" min="0" required>
+                <span class="input-unit">m</span>
+              </div>
+            </div>
+            <button type="submit" class="btn btn--primary w-full">
+              <i class="fas fa-calculator"></i>
+              Calcular Volumen
+            </button>
+          </form>
+          <div id="result-vertical-tank" class="result-display hidden">
+            <div class="result-item">
+              <span class="result-label">Volumen:</span>
+              <span class="result-value" id="tank-volume">0.00 m³</span>
+            </div>
+            <div class="result-item">
+              <span class="result-label">Volumen (ft³):</span>
+              <span class="result-value" id="tank-volume-ft">0.00 ft³</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Integral Graphing Card -->
+      <div class="calculator-card" data-calculator="integral">
+        <div class="calculator-card__header">
+          <h2 class="calculator-card__title">
+            <i class="fas fa-chart-line calculator-card__icon"></i>
+            Graficador de Integrales
+          </h2>
+        </div>
+        <div class="calculator-card__body">
+          <form class="calculator-form" id="form-integral">
+            <div class="form-group">
+              <label class="input-label" for="function-input">Función f(x)</label>
+              <div class="input-wrapper">
+                <i class="fas fa-superscript input-icon"></i>
+                <input type="text" id="function-input" class="input-field" placeholder="Ej: x^2, sin(x), e^x" required>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="input-label" for="limit-lower">Límite inferior (a)</label>
+                <div class="input-wrapper">
+                  <i class="fas fa-less-than input-icon"></i>
+                  <input type="number" id="limit-lower" class="input-field" placeholder="0" step="0.01" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="input-label" for="limit-upper">Límite superior (b)</label>
+                <div class="input-wrapper">
+                  <i class="fas fa-greater-than input-icon"></i>
+                  <input type="number" id="limit-upper" class="input-field" placeholder="5" step="0.01" required>
+                </div>
+              </div>
+            </div>
+            <button type="button" id="btn-graph" class="btn btn--primary w-full">
+              <i class="fas fa-chart-area"></i>
+              Graficar y Calcular
+            </button>
+          </form>
+
+          <!-- Function Examples -->
+          <div class="function-examples">
+            <span class="function-examples__label">Ejemplos:</span>
+            <div class="function-examples__buttons">
+              <button class="btn-example" data-function="x">x</button>
+              <button class="btn-example" data-function="x^2">x²</button>
+              <button class="btn-example" data-function="sin(x)">sin(x)</button>
+              <button class="btn-example" data-function="cos(x)">cos(x)</button>
+              <button class="btn-example" data-function="e^x">eˣ</button>
+              <button class="btn-example" data-function="ln(x)">ln(x)</button>
+            </div>
+          </div>
+
+          <!-- Graph Container -->
+          <div id="area-result" class="graph-container hidden">
+            <div id="graph-plot" class="graph-plot"></div>
+            <div class="result-display">
+              <div class="result-item">
+                <span class="result-label">Área bajo la curva:</span>
+                <span class="result-value" id="integral-area">0.00</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Correction Notifications -->
+          <div id="correction-notifications" class="correction-notifications hidden"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Floating History Button -->
+  <button id="btn-history-fab" class="history-fab" title="Ver historial">
+    <i class="fas fa-history"></i>
+  </button>
+
+  <!-- History Modal -->
+  <div id="history-modal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fas fa-history"></i> Historial de Cálculos</h3>
+        <button class="close-modal"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div id="history-list-modal" class="history-list">
+          <p class="history-empty">No hay cálculos guardados</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btn-clear-history-modal" class="btn btn--secondary">
+          <i class="fas fa-trash"></i> Limpiar
+        </button>
+        <button class="btn btn--ghost close-modal">
+          <i class="fas fa-times"></i> Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Application Script -->
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+{
+  "name": "hidraulicalc",
+  "version": "1.0.0",
+  "description": "Hidraulicalc - Hydraulic volume calculators with integral function graphing",
+  "main": "js/main.js",
+  "scripts": {
+    "start": "python3 -m http.server 8000 --directory public",
+    "build": "mkdir -p dist && node scripts/build.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "hydraulic",
+    "calculator",
+    "integral",
+    "graphing",
+    "engineering"
+  ],
+  "author": "Hidraulicalc Team",
+  "license": "MIT",
+  "dependencies": {
+    "mathjs": "^12.4.0",
+    "function-plot": "^1.23.3",
+    "animejs": "^3.2.1",
+    "toastify-js": "^1.12.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.19.11"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/hidraulicalc.git"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}

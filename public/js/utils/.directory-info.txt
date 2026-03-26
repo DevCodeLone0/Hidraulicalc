@@ -1,0 +1,15 @@
+/**
+ * @file placeholder.txt
+ * @description Placeholder file for js/utils/ directory
+ * This file will be replaced with actual utility modules during Phase 2 implementation.
+ * @author Hidraulicalc Team
+ * @version 1.0.0
+ */
+
+// This directory will contain:
+// - eventBus.js       - Pub/sub event system
+// - historyManager.js - localStorage history management
+// - toastManager.js   - Toastify-js notification wrapper
+// - errorCorrection.js - 7-stage error correction pipeline
+// - mathUtils.js      - Mathematical utility functions
+// - domUtils.js       - DOM manipulation utilities

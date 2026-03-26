@@ -1,0 +1,228 @@
+/**
+ * animations.css - Animation Styles
+ * @description Anime.js animations and transitions for playful interactions
+ * @author Hidraulicalc Team
+ * @version 1.0.0
+ */
+
+/* ========================================
+   GRAPH ANIMATIONS
+   ======================================== */
+
+.graph-container {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  background-color: var(--color-bg-input);
+  border: 2px solid var(--color-border-medium);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.graph-plot {
+  width: 100%;
+  height: 100%;
+}
+
+/* Graph loading animation */
+.graph-plot.loading::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(139, 69, 19, 0.1), transparent);
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* ========================================
+   AREA RESULT
+   ======================================== */
+
+.area-result {
+  position: absolute;
+  top: var(--spacing-md);
+  right: var(--spacing-md);
+  background-color: var(--color-bg-card);
+  border: 2px solid var(--color-accent);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+  box-shadow: var(--shadow-md);
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.area-result h3 {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin: 0 0 var(--spacing-xs) 0;
+}
+
+.area-value {
+  font-family: 'Courier New', monospace;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  margin: 0;
+}
+
+/* ========================================
+   EXAMPLE BUTTONS
+   ======================================== */
+
+.function-examples {
+  margin-top: var(--spacing-xl);
+}
+
+.function-examples h3 {
+  font-size: 1rem;
+  margin-bottom: var(--spacing-md);
+}
+
+.example-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+.btn-example {
+  font-family: 'Courier New', monospace;
+  font-size: 0.875rem;
+  padding: var(--spacing-xs) var(--spacing-md);
+  border: 1px solid var(--color-secondary);
+  border-radius: var(--radius-md);
+  background-color: transparent;
+  color: var(--color-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-example:hover {
+  background-color: var(--color-secondary);
+  color: var(--color-bg-main);
+  transform: translateY(-2px);
+}
+
+.btn-example:active {
+  transform: translateY(0);
+}
+
+/* ========================================
+   INTEGRAL CALCULATOR COMPONENT
+   ======================================== */
+
+.integral-calculator {
+  margin-bottom: var(--spacing-lg);
+}
+
+.function-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.function-input-container label {
+  font-family: system-ui, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+.function-input-container input {
+  font-family: 'Courier New', monospace;
+}
+
+/* ========================================
+   ERROR CORRECTION NOTIFICATIONS
+   ======================================== */
+
+.correction-notifications {
+  margin-top: var(--spacing-sm);
+  padding: var(--spacing-md);
+  background: linear-gradient(135deg, #FFFBF0 0%, #FFF3E0 100%);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius-md);
+  animation: fadeIn 0.3s ease;
+}
+
+.correction-message {
+  font-size: 0.875rem;
+  color: var(--color-text-primary);
+  padding: var(--spacing-xs) 0;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.correction-message::before {
+  content: '💡';
+  font-size: 1rem;
+}
+
+/* ========================================
+   FLOAT POINT TOOLTIP (for graph hover)
+   ======================================== */
+
+#graph-tooltip {
+  position: absolute;
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-secondary);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-xs) var(--spacing-md);
+  box-shadow: var(--shadow-md);
+  font-family: 'Courier New', monospace;
+  font-size: 0.875rem;
+  color: var(--color-text-primary);
+  pointer-events: none;
+  z-index: 100;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+#graph-tooltip.visible {
+  opacity: 1;
+}
+
+/* ========================================
+   TOAST ANIMATIONS (toastify-js overrides)
+   ======================================== */
+
+.toastify {
+  font-family: system-ui, sans-serif;
+  font-size: 0.9rem;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+}
+
+.toast.success {
+  background: linear-gradient(135deg, var(--color-success), #388E3C);
+}
+
+.toast.error {
+  background: linear-gradient(135deg, var(--color-error), #D32F2F);
+}
+
+.toast.warning {
+  background: linear-gradient(135deg, var(--color-warning), #FFA000);
+}
