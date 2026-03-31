@@ -1,140 +1,131 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Calculator } from 'lucide-react'
 
 export function CylindricalReservoirCalculator() {
-  const [radius, setRadius] = useState('')
-  const [height, setHeight] = useState('')
-  const [volume, setVolume] = useState<number | null>(null)
-  const [volumeFt, setVolumeFt] = useState<number | null>(null)
+const [radius, setRadius] = useState('')
+const [height, setHeight] = useState('')
+const [volume, setVolume] = useState<number | null>(null)
+const [volumeFt, setVolumeFt] = useState<number | null>(null)
 
-  const calculateVolume = (e: React.FormEvent) => {
-    e.preventDefault()
-    const r = parseFloat(radius)
-    const h = parseFloat(height)
-    
-    if (r > 0 && h > 0) {
-      const vol = Math.PI * r * r * h
-      setVolume(vol)
-      setVolumeFt(vol * 35.3147)
-    }
-  }
+const calculateVolume = (e: React.FormEvent) => {
+e.preventDefault()
+const r = parseFloat(radius)
+const h = parseFloat(height)
 
-  return (
-    <form onSubmit={calculateVolume} className="space-y-4">
-      {/* Radius Input */}
-      <div className="space-y-2">
-        <label className="text-sm text-gray-400 block">Radio (m)</label>
-        <motion.input
-          type="number"
-          value={radius}
-          onChange={(e) => setRadius(e.target.value)}
-          placeholder="Ej: 5"
-          step="0.01"
-          min="0"
-          required
-          className="glass-input w-full px-4 py-3 text-white placeholder-gray-500"
-          whileFocus={{ scale: 1.02 }}
-        />
-      </div>
+if (r > 0 && h > 0) {
+const vol = Math.PI * r * r * h
+setVolume(vol)
+setVolumeFt(vol * 35.3147)
+}
+}
 
-      {/* Height Input */}
-      <div className="space-y-2">
-        <label className="text-sm text-gray-400 block">Altura (m)</label>
-        <motion.input
-          type="number"
-          value={height}
-          onChange={(e) => setHeight(e.target.value)}
-          placeholder="Ej: 10"
-          step="0.01"
-          min="0"
-          required
-          className="glass-input w-full px-4 py-3 text-white placeholder-gray-500"
-        />
-      </div>
+return (
+<form onSubmit={calculateVolume} className="space-y-4">
+<div className="space-y-2">
+<label className="text-sm text-gray-400 block">Radio (m)</label>
+<input
+type="number"
+value={radius}
+onChange={(e) => setRadius(e.target.value)}
+placeholder="Ej: 5"
+step="0.01"
+min="0"
+required
+className="glass-input w-full px-4 py-3 text-white placeholder-gray-500"
+/>
+</div>
 
-      {/* Submit Button */}
-      <motion.button
-        type="submit"
-        className="glass-button w-full py-3 mt-6 flex items-center justify-center gap-2"
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.98 }}
-      >
-        <Calculator className="w-4 h-4" />
-        Calcular Volumen
-      </motion.button>
+<div className="space-y-2">
+<label className="text-sm text-gray-400 block">Altura (m)</label>
+<input
+type="number"
+value={height}
+onChange={(e) => setHeight(e.target.value)}
+placeholder="Ej: 10"
+step="0.01"
+min="0"
+required
+className="glass-input w-full px-4 py-3 text-white placeholder-gray-500"
+/>
+</div>
 
-      {/* Results */}
-      <AnimatePresence>
-        {(volume !== null && volumeFt !== null) && (
-          <motion.div 
-            className="mt-6 p-4 rounded-lg bg-cyan-500/10 border border-cyan-500/30"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.4 }}
-          >
-            <div className="space-y-3">
-              <ResultRow 
-                label="Volumen:" 
-                value={volume} 
-                unit="m³" 
-              />
-              <ResultRow 
-                label="Volumen (ft³):" 
-                value={volumeFt} 
-                unit="ft³" 
-              />
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </form>
-  )
+<motion.button
+type="submit"
+className="glass-button w-full py-3 mt-6 flex items-center justify-center gap-2"
+whileHover={{ scale: 1.02 }}
+whileTap={{ scale: 0.98 }}
+>
+<Calculator className="w-4 h-4" />
+Calcular Volumen
+</motion.button>
+
+<AnimatePresence>
+{(volume !== null && volumeFt !== null) && (
+<motion.div
+className="mt-6 p-4 rounded-lg bg-cyan-500/10 border border-cyan-500/30"
+initial={{ opacity: 0, y: 20 }}
+animate={{ opacity: 1, y: 0 }}
+exit={{ opacity: 0, y: -20 }}
+transition={{ duration: 0.4 }}
+>
+<div className="space-y-3">
+<ResultRow
+label="Volumen:"
+value={volume}
+unit="m³"
+/>
+<ResultRow
+label="Volumen (ft³):"
+value={volumeFt}
+unit="ft³"
+/>
+</div>
+</motion.div>
+)}
+</AnimatePresence>
+</form>
+)
 }
 
 function ResultRow({ label, value, unit }: { label: string, value: number | null, unit: string }) {
-  const [displayValue, setDisplayValue] = useState(0)
+const [displayValue, setDisplayValue] = useState(0)
 
-  // Animate counter
-  useState(() => {
-    if (value !== null) {
-      const duration = 500
-      const start = 0
-      const end = value
-      const startTime = performance.now()
+useEffect(() => {
+if (value !== null) {
+const duration = 500
+const start = 0
+const end = value
+const startTime = performance.now()
 
-      const animate = (currentTime: number) => {
-        const elapsed = currentTime - startTime
-        const progress = Math.min(elapsed / duration, 1)
-        const easeProgress = 1 - Math.pow(1 - progress, 3) // Ease out cubic
-        const current = start + (end - start) * easeProgress
-        
-        setDisplayValue(current)
+const animate = (currentTime: number) => {
+const elapsed = currentTime - startTime
+const progress = Math.min(elapsed / duration, 1)
+const easeProgress = 1 - Math.pow(1 - progress, 3)
+const current = start + (end - start) * easeProgress
 
-        if (progress < 1) {
-          requestAnimationFrame(animate)
-        }
-      }
+setDisplayValue(current)
 
-      requestAnimationFrame(animate)
-    }
-  }, [value])
+if (progress < 1) {
+requestAnimationFrame(animate)
+}
+}
 
-  return (
-    <div className="flex justify-between items-center">
-      <span className="text-gray-400">{label}</span>
-      <motion.span 
-        className="counter text-cyan-400 font-mono text-xl"
-        key={value}
-      >
-        {displayValue.toLocaleString('es-ES', { 
-          minimumFractionDigits: 2, 
-          maximumFractionDigits: 2 
-        })} {unit}
-      </motion.span>
-    </div>
-  )
+requestAnimationFrame(animate)
+}
+}, [value])
+
+return (
+<div className="flex justify-between items-center">
+<span className="text-gray-400">{label}</span>
+<span className="counter text-cyan-400 font-mono text-xl">
+{displayValue.toLocaleString('es-ES', {
+minimumFractionDigits: 2,
+maximumFractionDigits: 2
+})} {unit}
+</span>
+</div>
+)
 }
