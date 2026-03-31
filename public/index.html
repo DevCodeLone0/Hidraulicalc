@@ -7,13 +7,12 @@
   <meta name="author" content="Hidraulicalc Team">
   <title>Hidraulicalc - Hidráulica e Integrales</title>
 
-  <!-- External Libraries -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/mathjs@12.4.0/lib/browser/math.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/function-plot@1.23.3/dist/function-plot.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0"></script>
+<!-- External Libraries -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+<script src="https://cdn.jsdelivr.net/npm/mathjs@12.4.0/lib/browser/math.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/function-plot@1.23.3/dist/function-plot.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0"></script>
 
   <!-- Internal Styles -->
   <link rel="stylesheet" href="css/modern.css">
@@ -221,16 +220,52 @@
             </div>
           </div>
 
-          <!-- Graph Container -->
-          <div id="area-result" class="graph-container hidden">
-            <div id="graph-plot" class="graph-plot"></div>
-            <div class="result-display">
-              <div class="result-item">
-                <span class="result-label">Área bajo la curva:</span>
-                <span class="result-value" id="integral-area">0.00</span>
-              </div>
-            </div>
-          </div>
+<!-- Graph Container -->
+                    <div id="area-result" class="graph-container hidden">
+                        <!-- Graph Controls -->
+                        <div class="graph-controls">
+                            <div class="graph-controls__zoom">
+                                <button id="btn-zoom-in" class="graph-control-btn" title="Acercar (+)">
+                                    <i class="fas fa-search-plus"></i>
+                                </button>
+                                <button id="btn-zoom-out" class="graph-control-btn" title="Alejar (-)">
+                                    <i class="fas fa-search-minus"></i>
+                                </button>
+                                <button id="btn-reset-view" class="graph-control-btn" title="Restablecer vista (R)">
+                                    <i class="fas fa-expand"></i>
+                                </button>
+                            </div>
+                            <div class="graph-controls__pan">
+                                <button id="btn-pan-up" class="graph-control-btn" title="Mover arriba">
+                                    <i class="fas fa-arrow-up"></i>
+                                </button>
+                                <button id="btn-pan-left" class="graph-control-btn" title="Mover izquierda">
+                                    <i class="fas fa-arrow-left"></i>
+                                </button>
+                                <button id="btn-pan-right" class="graph-control-btn" title="Mover derecha">
+                                    <i class="fas fa-arrow-right"></i>
+                                </button>
+                                <button id="btn-pan-down" class="graph-control-btn" title="Mover abajo">
+                                    <i class="fas fa-arrow-down"></i>
+                                </button>
+                            </div>
+                            <div class="graph-controls__actions">
+                                <button id="btn-toggle-grid" class="graph-control-btn" title="Mostrar/Ocultar cuadrícula (G)">
+                                    <i class="fas fa-th"></i>
+                                </button>
+                                <button id="btn-export-graph" class="graph-control-btn" title="Exportar gráfico">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="graph-plot" class="graph-plot"></div>
+                        <div class="result-display">
+                            <div class="result-item">
+                                <span class="result-label">Área bajo la curva:</span>
+                                <span class="result-value" id="integral-area">0.00</span>
+                            </div>
+                        </div>
+                    </div>
 
           <!-- Correction Notifications -->
           <div id="correction-notifications" class="correction-notifications hidden"></div>

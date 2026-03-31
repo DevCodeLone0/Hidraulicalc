@@ -40,25 +40,22 @@ export class ToastManager {
     this.initialized = false;
   }
 
-  /**
-   * Initialize the toast manager
-   */
-  init() {
-    if (this.initialized) {
-      console.warn('⚠️ ToastManager already initialized');
-      return;
-    }
+/**
+     * Initialize the toast manager
+     */
+    init() {
+        if (this.initialized) {
+            return;
+        }
 
-    if (typeof Toastify === 'undefined') {
-      console.warn('⚠️ Toastify not loaded - using console fallback');
-      this.useConsoleFallback = true;
-    } else {
-      this.useConsoleFallback = false;
-    }
+        if (typeof Toastify === 'undefined') {
+            this.useConsoleFallback = true;
+        } else {
+            this.useConsoleFallback = false;
+        }
 
-    this.initialized = true;
-    console.log('🔔 ToastManager initialized');
-  }
+        this.initialized = true;
+    }
 
   /**
    * Show a success toast notification

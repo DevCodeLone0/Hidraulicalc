@@ -6,6 +6,7 @@
  */
 
 // function-plot is loaded via CDN as a global variable
+// mathjs is loaded via CDN as a global variable
 
 /**
  * Graph render result structure
@@ -28,6 +29,10 @@ export class GraphRenderer {
     this.canvas = null;
     this.currentConfig = null;
     this.resizeObserver = null;
+    
+    // Guardar expresión compilada y opciones para re-render
+    this.currentCompiledExpr = null;
+    this.currentOptions = {};
 
     // Default graph configuration
     this.config = {
@@ -64,11 +69,10 @@ export class GraphRenderer {
         throw new Error('Canvas element not found');
       }
 
-      // Set up resize observer
-      this._setupResizeObserver();
+// Set up resize observer
+        this._setupResizeObserver();
 
-      console.log('📊 GraphRenderer initialized');
-      return true;
+        return true;
 
     } catch (error) {
       console.error('Error initializing GraphRenderer:', error);
@@ -90,6 +94,17 @@ export class GraphRenderer {
         throw new Error('Canvas not initialized. Call init() first.');
       }
 
+      // Guardar expresión compilada para re-render (resize, etc.)
+      if (typeof fnFunction === 'function' && fnFunction.evaluate) {
+        this.currentCompiledExpr = fnFunction;
+      } else if (typeof fnFunction === 'string') {
+        // Compilar string para guardarlo
+        if (typeof math !== 'undefined') {
+          this.currentCompiledExpr = math.compile(fnFunction);
+        }
+      }
+      this.currentOptions = options;
+
       // Build data array
       const data = this._buildDataArray(fnFunction, a, b, options);
 
@@ -110,11 +125,12 @@ export class GraphRenderer {
       if (typeof functionPlot === 'undefined') {
         throw new Error('function-plot library not loaded');
       }
+
       functionPlot(graphConfig);
 
       // Emit success event
       this.eventBus.emit('graph:rendered', {
-        fn: fnFunction,
+        fn: this.currentCompiledExpr || fnFunction,
         a,
         b,
         width: graphConfig.width,
@@ -141,41 +157,94 @@ export class GraphRenderer {
   }
 
   /**
-   * Build data array for function-plot
-   * @private
-   * @param {string|Object} fnFunction - Function to render
-   * @param {number} [a] - Lower limit
-   * @param {number} [b] - Upper limit
-   * @param {Object} [options] - Additional options
-   * @returns {Array} Data array
-   */
-  _buildDataArray(fnFunction, a, b, options) {
+ * Build data array for function-plot
+ * @private
+ * @param {string|Object|Function} fnFunction - Function to render
+ * @param {number} [a] - Lower limit
+ * @param {number} [b] - Upper limit
+ * @param {Object} [options] - Additional options
+ * @returns {Array} Data array
+ */
+  _buildDataArray(fnFunction, a, b, options = {}) {
     const data = [];
+    const opts = options || {};
 
-    // Main function
-    const fn = typeof fnFunction === 'object' ? fnFunction : { fn: fnFunction };
-    data.push({
-      ...fn,
-      graphType: 'polyline',
-      color: options.color || '#1976D2',
-      sampler: 'builtIn',
-      nSamples: options.nSamples || 1000
-    });
+    // Verificar que math.js esté disponible
+    if (typeof math === 'undefined') {
+      throw new Error('math.js library not loaded. Cannot render graph.');
+    }
 
-      // Shaded area for definite integral
-      if (a !== null && b !== null) {
-        data.push({
-          fn: fn.fn,
-          graphType: 'area',
-          closed: true,
-          color: options.fillColor || 'rgba(25, 118, 210, 0.2)',
-          boundaries: {
-            x: { min: a, max: b }
-          }
-        });
+    // Determinar si es una expresión compilada de math.js
+    const isCompiledExpr = typeof fnFunction === 'function' && fnFunction.evaluate;
+
+    // Si ya es una expresión compilada, usarla directamente
+    // Si es string, compilarla con math.js
+    let compiledExpr;
+
+    if (isCompiledExpr) {
+      compiledExpr = fnFunction;
+    } else if (typeof fnFunction === 'string') {
+      try {
+        compiledExpr = math.compile(fnFunction);
+      } catch (e) {
+        throw new Error(`No se pudo compilar la función: ${fnFunction}. Error: ${e.message}`);
       }
+    } else {
+      throw new Error('Tipo de función no soportado. Use string o expresión compilada de math.js');
+    }
 
-      return data;
+    // Crear función evaluadora segura para function-plot
+    const createSafeEvaluator = (expr, coefficient = 1) => {
+      return (x) => {
+        try {
+          // function-plot puede pasar {x: valor} o el valor directamente
+          const xVal = (typeof x === 'object' && x !== null && 'x' in x) ? x.x : x;
+
+          // Validar que x sea un número finito
+          if (typeof xVal !== 'number' || !isFinite(xVal)) {
+            return NaN;
+          }
+
+          const scope = { x: xVal, pi: Math.PI, e: Math.E };
+          const result = expr.evaluate(scope);
+
+          // Manejar resultados no válidos
+          if (typeof result !== 'number' || !isFinite(result)) {
+            return NaN;
+          }
+
+          return result * coefficient;
+        } catch (e) {
+          // Log silencioso para errores esperados (ej: ln(0))
+          return NaN;
+        }
+      };
+    };
+
+    // Construir objeto de función para function-plot
+    const fnObj = {
+      fn: createSafeEvaluator(compiledExpr, opts.coefficient || 1),
+      graphType: 'polyline',
+      color: opts.color || '#1976D2',
+      nSamples: opts.nSamples || 500
+    };
+
+    data.push(fnObj);
+
+    // Shaded area for definite integral
+    if (a !== null && b !== null) {
+      data.push({
+        fn: createSafeEvaluator(compiledExpr, opts.coefficient || 1),
+        graphType: 'area',
+        closed: true,
+        color: opts.fillColor || 'rgba(25, 118, 210, 0.3)',
+        boundaries: {
+          x: { min: a, max: b }
+        }
+      });
+    }
+
+    return data;
   }
 
   /**
@@ -423,10 +492,10 @@ export class GraphRenderer {
   }
 
   /**
-   * Handle canvas resize
-   * @private
-   * @param {DOMRect} rect - New canvas dimensions
-   */
+ * Handle canvas resize
+ * @private
+ * @param {DOMRect} rect - New canvas dimensions
+ */
   _handleResize(rect) {
     try {
       if (!this.currentConfig || this.animating) return;
@@ -441,7 +510,20 @@ export class GraphRenderer {
       }
 
       this.resizeTimeout = setTimeout(() => {
-        this.render(this.currentConfig.data[0].fn);
+        // Usar la expresión compilada guardada, no la función evaluadora
+        if (this.currentCompiledExpr) {
+          // Preservar límites de integración
+          let a = null;
+          let b = null;
+          if (this.currentConfig.data.length > 1) {
+            const areaData = this.currentConfig.data[1];
+            if (areaData.boundaries && areaData.boundaries.x) {
+              a = areaData.boundaries.x.min;
+              b = areaData.boundaries.x.max;
+            }
+          }
+          this.render(this.currentCompiledExpr, a, b, this.currentOptions);
+        }
       }, 100);
 
     } catch (error) {

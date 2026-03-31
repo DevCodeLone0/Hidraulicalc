@@ -42,40 +42,37 @@ export class GraphControls {
     this._boundWheelHandler = null;
   }
 
-  /**
-   * Initialize the controls
-   * @returns {boolean} True if initialized successfully
-   */
-  init() {
-    try {
-      console.log('🎮 GraphControls initializing...');
+/**
+     * Initialize the controls
+     * @returns {boolean} True if initialized successfully
+     */
+    init() {
+        try {
+            // Get control elements
+            this._findControlElements();
 
-      // Get control elements
-      this._findControlElements();
+            // Set up event listeners
+            if (this.zoomInBtn) this.zoomInBtn.addEventListener('click', () => this.handleZoomIn());
+            if (this.zoomOutBtn) this.zoomOutBtn.addEventListener('click', () => this.handleZoomOut());
+            if (this.resetBtn) this.resetBtn.addEventListener('click', () => this.handleReset());
+            if (this.gridBtn) this.gridBtn.addEventListener('click', () => this.handleToggleGrid());
+            if (this.expandBtn) this.expandBtn.addEventListener('click', () => this.handleExpand());
+            if (this.exportBtn) this.exportBtn.addEventListener('click', () => this.handleExport());
 
-      // Set up event listeners
-      if (this.zoomInBtn) this.zoomInBtn.addEventListener('click', () => this.handleZoomIn());
-      if (this.zoomOutBtn) this.zoomOutBtn.addEventListener('click', () => this.handleZoomOut());
-      if (this.resetBtn) this.resetBtn.addEventListener('click', () => this.handleReset());
-      if (this.gridBtn) this.gridBtn.addEventListener('click', () => this.handleToggleGrid());
-      if (this.expandBtn) this.expandBtn.addEventListener('click', () => this.handleExpand());
-      if (this.exportBtn) this.exportBtn.addEventListener('click', () => this.handleExport());
+            // Pan controls
+            if (this.panUpBtn) this.panUpBtn.addEventListener('click', () => this.handlePan(0, 1));
+            if (this.panDownBtn) this.panDownBtn.addEventListener('click', () => this.handlePan(0, -1));
+            if (this.panLeftBtn) this.panLeftBtn.addEventListener('click', () => this.handlePan(-1, 0));
+            if (this.panRightBtn) this.panRightBtn.addEventListener('click', () => this.handlePan(1, 0));
 
-      // Pan controls
-      if (this.panUpBtn) this.panUpBtn.addEventListener('click', () => this.handlePan(0, 1));
-      if (this.panDownBtn) this.panDownBtn.addEventListener('click', () => this.handlePan(0, -1));
-      if (this.panLeftBtn) this.panLeftBtn.addEventListener('click', () => this.handlePan(-1, 0));
-      if (this.panRightBtn) this.panRightBtn.addEventListener('click', () => this.handlePan(1, 0));
+            // Set up keyboard shortcuts
+            this._setupKeyboardShortcuts();
 
-      // Set up keyboard shortcuts
-      this._setupKeyboardShortcuts();
+            // Set up wheel zoom
+            this._setupWheelZoom();
 
-      // Set up wheel zoom
-      this._setupWheelZoom();
-
-      this.initialized = true;
-      console.log('✅ GraphControls initialized');
-      return true;
+            this.initialized = true;
+            return true;
 
     } catch (error) {
       console.error('Error initializing GraphControls:', error);

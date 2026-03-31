@@ -1,0 +1,226 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ========================================
+   KUDANIL-INSPIRED THEME
+   Deep blacks, broken whites, technical cyan
+   ======================================== */
+
+:root {
+  /* Core Colors */
+  --deep-black: #0a0a0a;
+  --charcoal: #0f0f0f;
+  --dark-surface: #121212;
+  --broken-white: #f5f5f5;
+  --off-white: #fafafa;
+  
+  /* Accents */
+  --technical-cyan: #00d4ff;
+  --cyan-glow: #00f0ff;
+  --cyan-dim: #00a8cc;
+  --technical-orange: #ff6b35;
+  
+  /* Glass Effect */
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-shadow: rgba(0, 0, 0, 0.3);
+  
+  /* Typography */
+  --font-display: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+/* ========================================
+   BASE STYLES
+   ======================================== */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    font-family: var(--font-display);
+  }
+  
+  body {
+    background-color: var(--deep-black);
+    color: var(--broken-white);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: var(--dark-surface);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: var(--technical-cyan);
+    border-radius: 4px;
+    
+    &:hover {
+      background: var(--cyan-glow);
+    }
+  }
+  
+  /* Selection */
+  ::selection {
+    background: var(--technical-cyan);
+    color: var(--deep-black);
+  }
+}
+
+/* ========================================
+   GLASSMORPHISM COMPONENTS
+   ======================================== */
+
+@layer components {
+  .glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px var(--glass-shadow);
+  }
+  
+  .glass-input {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    color: var(--broken-white);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    &:focus {
+      border-color: var(--technical-cyan);
+      box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.2);
+      outline: none;
+    }
+    
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.4);
+    }
+  }
+  
+  .glass-button {
+    background: linear-gradient(135deg, var(--technical-cyan), var(--cyan-dim));
+    color: var(--deep-black);
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 212, 255, 0.4);
+    }
+    
+    &:active {
+      transform: translateY(0);
+    }
+  }
+  
+  /* Hero Typography */
+  .hero-text {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 8vw, 8rem);
+    font-weight: 800;
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    background: linear-gradient(135deg, var(--broken-white) 0%, var(--technical-cyan) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  /* Display Card Title */
+  .card-title {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--broken-white);
+    letter-spacing: -0.02em;
+  }
+  
+  /* Animated Counter */
+  .counter {
+    font-family: var(--font-mono);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--technical-cyan);
+  }
+}
+
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+
+@layer utilities {
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  .animate-gradient {
+    background-size: 200% 200%;
+    animation: gradient 8s ease infinite;
+  }
+  
+  .animate-pulse-slow {
+    animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes gradient {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* ========================================
+   PARTICLE EFFECTS
+   ======================================== */
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--technical-cyan);
+  opacity: 0.3;
+  pointer-events: none;
+  animation: particle-float 20s infinite linear;
+}
+
+@keyframes particle-float {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.3;
+  }
+  90% {
+    opacity: 0.3;
+  }
+  100% {
+    transform: translateY(-100vh) rotate(360deg);
+    opacity: 0;
+  }
+}

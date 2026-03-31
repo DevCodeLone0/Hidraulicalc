@@ -1,36 +1,32 @@
 {
   "name": "hidraulicalc",
-  "version": "1.0.0",
-  "description": "Hidraulicalc - Hydraulic volume calculators with integral function graphing",
-  "main": "js/main.js",
+  "version": "2.0.0",
+  "private": true,
   "scripts": {
-    "start": "python3 -m http.server 8000 --directory public",
-    "build": "mkdir -p dist && node scripts/build.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
-  "keywords": [
-    "hydraulic",
-    "calculator",
-    "integral",
-    "graphing",
-    "engineering"
-  ],
-  "author": "Hidraulicalc Team",
-  "license": "MIT",
   "dependencies": {
+    "next": "15.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "framer-motion": "^11.0.0",
+    "tailwindcss": "^4.0.0",
+    "@tailwindcss/postcss": "^4.0.0",
+    "lucide-react": "^0.468.0",
+    "clsx": "^2.1.0",
+    "tailwind-merge": "^2.2.0",
     "mathjs": "^12.4.0",
-    "function-plot": "^1.23.3",
-    "animejs": "^3.2.1",
-    "toastify-js": "^1.12.0"
+    "function-plot": "^1.23.3"
   },
   "devDependencies": {
-    "esbuild": "^0.19.11"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/yourusername/hidraulicalc.git"
-  },
-  "engines": {
-    "node": ">=16.0.0"
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "eslint": "^8.0.0",
+    "eslint-config-next": "15.0.0"
   }
 }

@@ -169,15 +169,14 @@ export class FunctionParser {
 
     // Check for valid characters
     try {
-      // Check each character
-      const validChars = /^[a-z0-9+\-*/^()\s.,e]$/i;
-      for (const char of expression) {
-        if (!validChars.test(char)) {
-          console.warn(`Invalid character detected: ${char}`);
-          return false;
-        }
-      }
-      return true;
+// Check each character
+            const validChars = /^[a-z0-9+\-*/^()\s.,e]$/i;
+            for (const char of expression) {
+                if (!validChars.test(char)) {
+                    return false;
+                }
+            }
+            return true;
     } catch (error) {
       console.error('Error in _validateStructure():', error);
       return false;

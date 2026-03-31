@@ -38,19 +38,17 @@ export class HistoryManager {
     this.history = [];
   }
 
-  /**
-   * Initialize the history manager
-   */
-  init() {
-    if (this.initialized) {
-      console.warn('⚠️ HistoryManager already initialized');
-      return;
-    }
+/**
+     * Initialize the history manager
+     */
+    init() {
+        if (this.initialized) {
+            return;
+        }
 
-    this._loadFromStorage();
-    this.initialized = true;
-    console.log(`📋 HistoryManager initialized (${this.history.length} entries)`);
-  }
+        this._loadFromStorage();
+        this.initialized = true;
+    }
 
   /**
    * Add a calculation to history
@@ -136,14 +134,13 @@ export class HistoryManager {
     return false;
   }
 
-  /**
-   * Clear all history
-   */
-  clear() {
-    this.history = [];
-    this._saveToStorage();
-    console.log('🗑️ History cleared');
-  }
+/**
+     * Clear all history
+     */
+    clear() {
+        this.history = [];
+        this._saveToStorage();
+    }
 
   /**
    * Get history statistics
@@ -202,14 +199,12 @@ export class HistoryManager {
       // Trim to max size
       this.history = unique.slice(0, this.maxSize);
 
-      this._saveToStorage();
-      console.log(`📥 Imported ${valid.length} history entries`);
-      return true;
-    } catch (error) {
-      console.error('❌ Failed to import history:', error);
-      return false;
+this._saveToStorage();
+            return true;
+        } catch (error) {
+            return false;
+        }
     }
-  }
 
   /**
    * Load history from localStorage

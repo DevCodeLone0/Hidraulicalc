@@ -68,24 +68,21 @@ export class IntegralGrapher {
       return false;
     }
 
-    try {
-      console.log('📐 IntegralGrapher initializing...');
+try {
+            // Initialize sub-components
+            await this._initComponents();
 
-      // Initialize sub-components
-      await this._initComponents();
+            // Find DOM elements
+            this._findElements();
 
-      // Find DOM elements
-      this._findElements();
+            // Set up event listeners
+            this._setupEventListeners();
 
-      // Set up event listeners
-      this._setupEventListeners();
+            // Set up example buttons
+            this._setupExampleButtons();
 
-      // Set up example buttons
-      this._setupExampleButtons();
-
-      this.initialized = true;
-      console.log('✅ IntegralGrapher initialized successfully');
-      return true;
+            this.initialized = true;
+            return true;
 
     } catch (error) {
       console.error('Error initializing IntegralGrapher:', error);
@@ -112,11 +109,9 @@ export class IntegralGrapher {
     // Initialize formula display
     await this.formulaDisplay.init();
 
-    // Initialize tooltip
-    await this.tooltip.init();
-
-    console.log('✅ All sub-components initialized');
-  }
+// Initialize tooltip
+        await this.tooltip.init();
+    }
 
   /**
    * Find DOM elements
@@ -191,7 +186,7 @@ export class IntegralGrapher {
         let a = null;
         let b = null;
 
-        if (fn === 'ln(x)) {
+        if (fn === 'ln(x)') {
           // Logarithmic function needs positive limits
           a = 0.1;
           b = 5;
@@ -259,12 +254,11 @@ export class IntegralGrapher {
         return;
       }
 
-      // Clear previous errors
-      this._clearError();
+// Clear previous errors
+        this._clearError();
 
-      // Parse function
-      console.log(`Parsing function: ${fnInput}`);
-      const parseResult = this.parser.parse(fnInput);
+        // Parse function
+        const parseResult = this.parser.parse(fnInput);
 
       if (!parseResult.valid) {
         this._showError(parseResult.error || 'Error al analizar la función');
@@ -280,13 +274,12 @@ export class IntegralGrapher {
         });
       }
 
-      // Calculate integral
-      console.log(`Calculating integral from ${a} to ${b}`);
-      const integralResult = this.calculator.integrate(
-        (x) => this.parser.evaluate(parseResult, x),
-        a,
-        b
-      );
+// Calculate integral
+        const integralResult = this.calculator.integrate(
+            (x) => this.parser.evaluate(parseResult, x),
+            a,
+            b
+        );
 
       if (!integralResult.converged) {
         this._showWarning('El cálculo no convergió completamente. El resultado puede tener mayor error.');
@@ -297,22 +290,35 @@ export class IntegralGrapher {
       this.currentLimits = { a, b };
       this.currentResult = integralResult.value;
 
-      // Render graph
-      console.log('Rendering graph...');
-      const renderResult = this.renderer.render(
-        parseResult.corrected,
-        a,
-        b,
-        {
-          color: '#1976D2',
-          fillColor: 'rgba(25, 118, 210, 0.3)',
-          limitColor: '#D32F2F'
-        }
-      );
+        // Render graph
+        try {
+          // Compilar la función con math.js antes de pasarla
+          if (typeof math === 'undefined') {
+            throw new Error('math.js library not loaded');
+          }
+          
+          const compiledExpr = math.compile(parseResult.corrected);
+          
+          const renderResult = this.renderer.render(
+            compiledExpr,
+            a,
+            b,
+            {
+              color: '#1976D2',
+              fillColor: 'rgba(25, 118, 210, 0.3)',
+              limitColor: '#D32F2F',
+              coefficient: 1,
+              nSamples: 500  // Reducido para mejor rendimiento
+            }
+          );
 
-      if (!renderResult.success) {
-        this._showWarning('Gráfico renderizado con errores');
-      }
+          if (!renderResult.success) {
+            this._showWarning('Gráfico renderizado con errores: ' + renderResult.error);
+          }
+        } catch (e) {
+          console.error('Error al compilar/renderizar:', e);
+          this._showWarning(`Error al compilar la función: ${e.message}`);
+        }
 
       // Update formula display
       this.formulaDisplay.update(parseResult.corrected, a, b);
@@ -333,10 +339,8 @@ export class IntegralGrapher {
         timestamp: Date.now()
       });
 
-      // Show success toast
-      this.toastManager.success('✅ Integral calculada correctamente');
-
-      console.log('✅ Calculation complete:', integralResult);
+// Show success toast
+        this.toastManager.success('✅ Integral calculada correctamente');
 
     } catch (error) {
       console.error('Error in calculate():', error);
@@ -547,25 +551,21 @@ export class IntegralGrapher {
     };
   }
 
-  /**
-   * Destroy the component
-   */
-  destroy() {
-    console.log('🧹 Cleaning up IntegralGrapher...');
+/**
+     * Destroy the component
+     */
+    destroy() {
+        // Destroy sub-components
+        if (this.parser) this.parser.destroy();
+        if (this.renderer) this.renderer.destroy();
+        if (this.controls) this.controls.destroy();
+        if (this.formulaDisplay) this.formulaDisplay.destroy();
+        if (this.tooltip) this.tooltip.destroy();
 
-    // Destroy sub-components
-    if (this.parser) this.parser.destroy();
-    if (this.renderer) this.renderer.destroy();
-    if (this.controls) this.controls.destroy();
-    if (this.formulaDisplay) this.formulaDisplay.destroy();
-    if (this.tooltip) this.tooltip.destroy();
-
-    // Clear references
-    this.calculator = null;
-    this.eventBus = null;
-    this.toastManager = null;
-    this.historyManager = null;
-
-    console.log('✅ IntegralGrapher destroyed');
-  }
+        // Clear references
+        this.calculator = null;
+        this.eventBus = null;
+        this.toastManager = null;
+        this.historyManager = null;
+    }
 }

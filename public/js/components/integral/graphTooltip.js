@@ -36,31 +36,26 @@ export class GraphTooltip {
     this._boundMouseEnter = null;
   }
 
-  /**
-   * Initialize the tooltip
-   * @returns {boolean} True if initialized successfully
-   */
-  init() {
-    try {
-      console.log('💬 GraphTooltip initializing...');
+/**
+     * Initialize the tooltip
+     * @returns {boolean} True if initialized successfully
+     */
+    init() {
+        try {
+            // Create tooltip element
+            this._createTooltipElement();
 
-      // Create tooltip element
-      this._createTooltipElement();
+            // Get canvas from renderer
+            if (this.renderer.canvas) {
+                this.canvas = this.renderer.canvas;
+                this._setupEvents();
+            }
 
-      // Get canvas from renderer
-      if (this.renderer.canvas) {
-        this.canvas = this.renderer.canvas;
-        this._setupEvents();
-      } else {
-        console.warn('Canvas not available, tooltip will initialize when renderer is ready');
-      }
+            // Listen for graph render events
+            this.eventBus.on('graph:rendered', this._onGraphRendered.bind(this));
 
-      // Listen for graph render events
-      this.eventBus.on('graph:rendered', this._onGraphRendered.bind(this));
-
-      this.initialized = true;
-      console.log('✅ GraphTooltip initialized');
-      return true;
+            this.initialized = true;
+            return true;
 
     } catch (error) {
       console.error('Error initializing GraphTooltip:', error);
@@ -252,39 +247,58 @@ export class GraphTooltip {
   }
 
   /**
-   * Calculate y value at x
-   * @private
-   * @param {number} x - X value
-   * @returns {number|null} Y value or null if error
-   */
+ * Calculate y value at x
+ * @private
+ * @param {number} x - X value
+ * @returns {number|null} Y value or null if error
+ */
   _calculateY(x) {
     try {
       if (!this.currentFunction) return null;
 
       const fn = this.currentFunction;
 
-      // Check if it's a string or compiled function
+      // Validar que x sea un número finito
+      if (typeof x !== 'number' || !isFinite(x)) {
+        return null;
+      }
+
       let y;
-      if (typeof fn === 'string') {
-        // Parse and evaluate with math.js
-        const math = window.math;
-        if (math) {
-          const node = math.parse(fn);
-          const compiled = node.compile();
-          y = compiled.evaluate({ x });
+
+      // Check if it's a compiled math.js expression (has .evaluate method)
+      if (fn && typeof fn.evaluate === 'function') {
+        // Es una expresión compilada de math.js
+        const scope = { x, pi: Math.PI, e: Math.E };
+        y = fn.evaluate(scope);
+      } else if (typeof fn === 'function') {
+        // Es una función regular
+        y = fn(x);
+      } else if (typeof fn === 'string') {
+        // Es un string, parsear con math.js
+        if (typeof math !== 'undefined') {
+          try {
+            const node = math.parse(fn);
+            const compiled = node.compile();
+            const scope = { x, pi: Math.PI, e: Math.E };
+            y = compiled.evaluate(scope);
+          } catch (e) {
+            return null;
+          }
         } else {
           return null;
         }
-      } else if (typeof fn === 'function') {
-        y = fn(x);
       } else {
+        return null;
+      }
+
+      // Validar resultado
+      if (typeof y !== 'number' || !isFinite(y)) {
         return null;
       }
 
       return y;
 
     } catch (error) {
-      console.error('Error calculating y:', error);
       return null;
     }
   }

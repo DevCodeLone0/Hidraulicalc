@@ -184,9 +184,8 @@ export class IntegralCalculator {
         return adaptiveResult;
       }
 
-      // Fall back to Simpson's rule
-      console.warn('Adaptive method did not converge, falling back to Simpson\'s rule');
-      return this.integrateSimpson(fn, a, b, null, false);
+// Fall back to Simpson's rule
+            return this.integrateSimpson(fn, a, b, null, false);
 
     } catch (error) {
       console.error('Error in integrate():', error);
@@ -292,11 +291,10 @@ export class IntegralCalculator {
    */
   _adaptiveQuadrature(fn, a, b, prevResult, tolerance, depth) {
     try {
-      // Check recursion depth
-      if (depth > this.ADAPTIVE_MAX_DEPTH) {
-        console.warn(`Adaptive quadrature reached max depth: ${depth}`);
-        return prevResult;
-      }
+// Check recursion depth
+            if (depth > this.ADAPTIVE_MAX_DEPTH) {
+                return prevResult;
+            }
 
       // Check convergence
       if (prevResult.error < tolerance || !isFinite(prevResult.error)) {

@@ -312,22 +312,66 @@ body {
 }
 
 /* ========================================
- GRAPH CONTAINER
- ======================================== */
+GRAPH CONTAINER
+======================================== */
 .graph-container {
-  background: var(--color-white);
-  border: 1px solid var(--color-gray-200);
-  border-radius: var(--radius-lg);
-  padding: var(--spacing-4);
-  margin: var(--spacing-4) 0;
+    background: var(--color-white);
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-4);
+    margin: var(--spacing-4) 0;
 }
 
 .graph-plot {
-  width: 100%;
-  height: 300px;
-  border: 1px solid var(--color-gray-200);
-  border-radius: var(--radius-md);
-  background: var(--color-white);
+    width: 100%;
+    height: 300px;
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-md);
+    background: var(--color-white);
+}
+
+/* ========================================
+GRAPH CONTROLS
+======================================== */
+.graph-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-2);
+    margin-bottom: var(--spacing-3);
+    padding: var(--spacing-2);
+    background: var(--color-gray-50);
+    border-radius: var(--radius-md);
+}
+
+.graph-controls__zoom,
+.graph-controls__pan,
+.graph-controls__actions {
+    display: flex;
+    gap: var(--spacing-1);
+}
+
+.graph-control-btn {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--color-gray-300);
+    border-radius: var(--radius-sm);
+    background: var(--color-white);
+    color: var(--color-gray-600);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.graph-control-btn:hover {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-white);
+}
+
+.graph-control-btn:active {
+    transform: scale(0.95);
 }
 
 /* ========================================

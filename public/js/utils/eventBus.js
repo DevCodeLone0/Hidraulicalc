@@ -15,17 +15,15 @@ export class EventBus {
     this.initialized = false;
   }
 
-  /**
-   * Initialize the event bus
-   */
-  init() {
-    if (this.initialized) {
-      console.warn('⚠️ EventBus already initialized');
-      return;
+/**
+     * Initialize the event bus
+     */
+    init() {
+        if (this.initialized) {
+            return;
+        }
+        this.initialized = true;
     }
-    this.initialized = true;
-    console.log('📨 EventBus initialized');
-  }
 
   /**
    * Subscribe to an event
@@ -117,14 +115,13 @@ export class EventBus {
     return this.events[eventName] ? this.events[eventName].length : 0;
   }
 
-  /**
-   * Destroy the event bus (cleanup)
-   */
-  destroy() {
-    this.events = {};
-    this.initialized = false;
-    console.log('🧹 EventBus destroyed');
-  }
+/**
+     * Destroy the event bus (cleanup)
+     */
+    destroy() {
+        this.events = {};
+        this.initialized = false;
+    }
 }
 
 /**

@@ -29,23 +29,20 @@ export class FormulaDisplay {
     this.initialized = false;
   }
 
-  /**
-   * Initialize the formula display
-   * @returns {boolean} True if initialized successfully
-   */
-  init() {
-    try {
-      console.log('📐 FormulaDisplay initializing...');
+/**
+     * Initialize the formula display
+     * @returns {boolean} True if initialized successfully
+     */
+    init() {
+        try {
+            // Find display elements
+            this._findElements();
 
-      // Find display elements
-      this._findElements();
+            // Set up event listeners
+            this._setupEventListeners();
 
-      // Set up event listeners
-      this._setupEventListeners();
-
-      this.initialized = true;
-      console.log('✅ FormulaDisplay initialized');
-      return true;
+            this.initialized = true;
+            return true;
 
     } catch (error) {
       console.error('Error initializing FormulaDisplay:', error);
@@ -63,11 +60,11 @@ export class FormulaDisplay {
     this.notationElement = document.getElementById('integral-notation');
     this.resultElement = document.getElementById('integral-result');
 
-    // Log status
-    if (!this.formulaElement && !this.notationElement && !this.resultElement) {
-      console.info('FormulaDisplay: No display elements found (optional feature)');
+// Log status
+            if (!this.formulaElement && !this.notationElement && !this.resultElement) {
+                // No display elements found - feature will be disabled
+            }
     }
-  }
 
   /**
    * Set up event listeners
